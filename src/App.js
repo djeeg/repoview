@@ -15,14 +15,17 @@ class App extends Component {
     }
 
     onClickRepo(i) {
-        if(this.state.repos[i.name]) {
+        console.log("onClickRepo", i);
+        var that = this;
+
+        if(this.state.repos && this.state.repos[i.name] && this.state.repos[i.name].issues) {
             return; //do nothing, it has already been loaded
         }
 
+        //todo: better merge state with immutable/deep set
         const newrepos = Object.assign([], this.state.repos, {
-            [i.name]: Object.assign({}, this.state.repos[i.name], {
+            [i.name]: Object.assign(this.state.repos.filter(j => j.name == i.name)[0], {
                 loadingissues: true,
-                issues: null,
             })
         });
         this.setState({repos: newrepos});
@@ -32,13 +35,21 @@ class App extends Component {
                 var response = await getIssues("nodejs", i.name);
                 if (response) {
                     console.log(response);
-                    // var repos = response.map((i) => {
-                    //     return {
-                    //         name: i.name,
-                    //         issues_url: i.issues_url,
-                    //     }
-                    // });
-                    // this.setState({repos: repos});
+                    var issues = response.map((i) => {
+                        return {
+                            id: i.id,
+                            title: i.title,
+                        }
+                    });
+
+                    //todo: better merge state with immutable/deep set
+                    const newrepos = Object.assign([], that.state.repos, {
+                        [i.name]: Object.assign(that.state.repos.filter(j => j.name == i.name)[0], {
+                            issues: issues,
+                        })
+                    });
+                    that.setState({repos: newrepos});
+
                 } else {
                     //todo: some error handling
                 }
@@ -60,6 +71,8 @@ class App extends Component {
                             return {
                                 name: i.name,
                                 issues_url: i.issues_url,
+                                loadingissues: false,
+                                issues: null,
                             }
                         });
                         this.setState({repos: repos});
@@ -93,13 +106,24 @@ class App extends Component {
                                   return (
                                       <li key={"repos-" + i.name} onClick={() => this.onClickRepo(i)}>
                                           {i.name}
-                                          {JSON.stringify(i.name)}
+                                          {/*<br/>*/}
+                                          {/*{JSON.stringify(i)}*/}
                                           <ul>
                                               {
-                                                  i.loadingissues ? (
+                                                  i.issues ? (
+                                                      <li>
+                                                          {
+                                                              i.issues.map(j => {
+                                                                  return (
+                                                                      <li key={"issues-" + j.id}>
+                                                                          {j.title}
+                                                                      </li>
+                                                                  );
+                                                              })
+                                                          }
+                                                      </li>
+                                                  ) : i.loadingissues ? (
                                                       <li>loading issues...</li>
-                                                  ) : i.issues ? (
-                                                      <li>{i.issues.length}</li>
                                                   ) : null
                                               }
                                           </ul>
