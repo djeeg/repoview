@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IssueItem /> renders 1`] = `
+<li
+  style={
+    Object {
+      "color": "green",
+    }
+  }
+/>
+`;
+
+exports[`<IssueItem /> renders with title 1`] = `
+<li
+  style={
+    Object {
+      "color": "green",
+    }
+  }
+>
+  Hello
+</li>
+`;

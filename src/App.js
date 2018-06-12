@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import {isBrowser} from "./kit/utils";
 import {getIssues, getRepositories} from "./data/github";
+import IssueItem from "./components/IssueItem";
 
 class App extends Component {
 
@@ -92,11 +93,8 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">repoview</h1>
         </header>
-        <p className="App-intro">
-
-        </p>
           <div>
               {
                   this.state.repos ? (
@@ -106,27 +104,21 @@ class App extends Component {
                                   return (
                                       <li key={"repos-" + i.name} onClick={() => this.onClickRepo(i)}>
                                           {i.name}
-                                          {/*<br/>*/}
-                                          {/*{JSON.stringify(i)}*/}
-                                          <ul>
-                                              {
-                                                  i.issues ? (
-                                                      <li>
-                                                          {
-                                                              i.issues.map(j => {
-                                                                  return (
-                                                                      <li key={"issues-" + j.id}>
-                                                                          {j.title}
-                                                                      </li>
-                                                                  );
-                                                              })
-                                                          }
-                                                      </li>
-                                                  ) : i.loadingissues ? (
-                                                      <li>loading issues...</li>
-                                                  ) : null
-                                              }
-                                          </ul>
+                                          {
+                                              i.issues ? (
+                                                  <ul key={"issues-" + i.name}>
+                                                      {
+                                                          i.issues.map(j => {
+                                                              return (
+                                                                  <IssueItem key={"issue-" + j.id} title={j.title} />
+                                                              );
+                                                          })
+                                                      }
+                                                  </ul>
+                                              ) : i.loadingissues ? (
+                                                  <ul key={"issuesloading-" + i.name}>loading...</ul>
+                                              ) : null
+                                          }
                                       </li>
                                   );
                               })
@@ -134,7 +126,7 @@ class App extends Component {
                       </ul>
                   ) : (
                       <ul key="repos-loading">
-                          <li>loading repos...</li>
+                          <li>loading...</li>
                       </ul>
                   )
               }

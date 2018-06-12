@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "chai": "^4.1.2",
+    "cross-env": "^5.1.6",
+    "jest": "^23.1.0",
+    "jest-cli": "^23.1.0",
     "libreact": "^2.0.0",
+    "mocha": "^5.2.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-scripts": "1.1.4",
@@ -12,8 +17,25 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "testDOESNOTWORK": "react-scripts test --env=jsdom ERROR: SyntaxError: Invalid regular expression: Unterminated character class",
+    "test:unit": "cross-env NODE_ENV=development ./node_modules/.bin/mocha --opts ./mocha.opts",
+    "test:snapshot": "./node_modules/.bin/jest --bail --colors",
     "eject": "react-scripts eject",
     "prettier": "prettier"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ],
+    "plugins": [
+      "transform-es2015-modules-commonjs"
+    ]
+  },
+  "devDependencies": {
+    "react-test-renderer": "^16.4.0"
+  },
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": ["/node_modules/", "/src/App.test.js"]
   }
 }

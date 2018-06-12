@@ -10,9 +10,9 @@ export function safefetch(url, options) {
                 if (200 <= response.status && response.status < 300) {
                     return response.json();
                 } else {
-                    console.error("fetch2 - response error");
+                    console.error("fetch2 - bad response");
                     return response.text().then(function (errtext) {
-                        console.error("fetch2 - response errtext - " + errtext);
+                        console.error("fetch2 - errtext - " + errtext);
                         return Promise.reject(errtext);
                     });
                 }
