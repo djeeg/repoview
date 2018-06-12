@@ -23,6 +23,7 @@ class App extends Component {
             return; //do nothing, it has already been loaded
         }
 
+        //mark current repo as loading
         //todo: better merge state with immutable/deep set
         const newrepos = Object.assign([], this.state.repos, {
             [i.name]: Object.assign(this.state.repos.filter(j => j.name == i.name)[0], {
@@ -37,6 +38,7 @@ class App extends Component {
                 if (response) {
                     console.log(response);
                     var issues = response.map((i) => {
+                        //todo: maybe some error handling with JSON extraction as 3rd party API
                         return {
                             id: i.id,
                             title: i.title,
@@ -44,21 +46,21 @@ class App extends Component {
                     });
 
                     //todo: better merge state with immutable/deep set
-                    const newrepos = Object.assign([], that.state.repos, {
-                        [i.name]: Object.assign(that.state.repos.filter(j => j.name == i.name)[0], {
+                    const newrepos = Object.assign([], this.state.repos, {
+                        [i.name]: Object.assign(this.state.repos.filter(j => j.name == i.name)[0], {
                             issues: issues,
                         })
                     });
-                    that.setState({repos: newrepos});
+                    this.setState({repos: newrepos});
 
                 } else {
-                    //todo: some error handling
+                    console.error("failed to receive issues");
                 }
             } catch(err) {
-                //todo: some error handling
+                console.error(err);
             }
 
-        }, 300);
+        }, 300); //todo: remove fake delay
     }
 
     componentDidMount() {
@@ -66,9 +68,11 @@ class App extends Component {
             setTimeout(async () => {
                 try {
                     var response = await getRepositories("nodejs");
+                    //todo: ideally call this from redux-thunk or redux-saga
                     if (response) {
                         //console.log(response);
                         var repos = response.map((i) => {
+                            //todo: maybe some error handling with JSON extraction as 3rd party API
                             return {
                                 name: i.name,
                                 issues_url: i.issues_url,
@@ -76,15 +80,15 @@ class App extends Component {
                                 issues: null,
                             }
                         });
+                        //todo: inject into redux, then use react-redux to connect()
                         this.setState({repos: repos});
                     } else {
-                        //todo: some error handling
+                        console.error("failed to receive repos");
                     }
                 } catch(err) {
-                    //todo: some error handling
+                    console.error(err);
                 }
-
-            }, 1000);
+            }, 500); //todo: remove fake delay
         }
     }
 
@@ -101,8 +105,9 @@ class App extends Component {
                       <ul key="repos">
                           {
                               this.state.repos.map(i => {
+                                  //todo: could extract this into another component called <RepoItem>
                                   return (
-                                      <li key={"repos-" + i.name} onClick={() => this.onClickRepo(i)}>
+                                      <li key={"repo-" + i.name} onClick={() => this.onClickRepo(i)}>
                                           {i.name}
                                           {
                                               i.issues ? (
