@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+//todo: need to get tooling working with non-code imports
+//import logo from './logo.svg';
+//import './App.css';
 import {isBrowser} from "./kit/utils";
 import {getIssues, getRepositories} from "./data/github";
 import IssueItem from "./components/IssueItem";
@@ -96,7 +97,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          {/*<img src={logo} className="App-logo" alt="logo" />*/}
           <h1 className="App-title">repoview</h1>
         </header>
           <div>

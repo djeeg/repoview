@@ -7,6 +7,7 @@
     "cross-env": "^5.1.6",
     "jest": "^23.1.0",
     "jest-cli": "^23.1.0",
+    "jest-fetch-mock": "^1.6.4",
     "libreact": "^2.0.0",
     "mocha": "^5.2.0",
     "react": "^16.4.0",
@@ -36,6 +37,10 @@
   },
   "jest": {
     "verbose": true,
-    "testPathIgnorePatterns": ["/node_modules/", "/src/App.test.js"]
+    "setupTestFrameworkScriptFile": "<rootDir>/test/setupTests.js",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/src/App.test.js"
+    ]
   }
 }

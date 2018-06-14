@@ -10,6 +10,7 @@ class IssueItem extends Component {
     }
 
   render() {
+      //todo: some kind of theme-ing, css-in-js solution, eg jss
     return (
       <li style={{color: 'green'}}>
           {this.props.title}
